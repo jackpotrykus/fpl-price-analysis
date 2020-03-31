@@ -30,12 +30,11 @@ LM = LinearRegression()
 
 
 def add_position_column(df, season):
+    """ add a column to a dataframe with each player's position """
     path = DATAPATH + season + "/players_raw.csv"
     pos = pd.read_csv(path)[["id", "element_type"]]
-
     df["position"] = df["element"].map(pos.set_index("id")["element_type"])
     return df
-
 
 
 def calc_corrs(season, position=None, pearson=True):
@@ -99,10 +98,10 @@ def calc_corrs(season, position=None, pearson=True):
     return df
 
 
-def make_plots(position=None, pearson=True, scatter_scale=4, line_scale=3):
-    """ produce plots... """
-    # create a string describing which measure of correlation was used
+def make_corr_plots(position=None, pearson=True, scatter_scale=4, line_scale=3):
+    """ produce plots of correlation between price and total points """
 
+    # to be used in the plot title
     if position is None:
         pos_str = "All"
     elif position == 1:
@@ -113,15 +112,14 @@ def make_plots(position=None, pearson=True, scatter_scale=4, line_scale=3):
         pos_str = "Midfielders"
     else:
         pos_str = "Forwards"
-    
+
+    # for y axis label, plot directory
     if pearson:
         corrname = "Pearson correlation coefficient"
         plot_dir = os.path.join(".", "pearson", pos_str.lower())
-        # plot_dir = "./pearson/" + pos_str.lower() + "/"
     else:
         corrname = "Spearman ranked correlation coefficient"
         plot_dir = os.path.join(".", "spearman", pos_str.lower())
-        # plot_dir = "./spearman/" + pos_str.lower() + "/"
 
     # create a directory for the plots, if necessary
     if not os.path.exists(plot_dir):
@@ -161,8 +159,8 @@ def make_plots(position=None, pearson=True, scatter_scale=4, line_scale=3):
 
 
 for p in POSITION_LIST:
-    make_plots(p, True)
-    make_plots(p, False)
+    make_corr_plots(p, True)
+    make_corr_plots(p, False)
 
 
 
