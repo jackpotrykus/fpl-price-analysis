@@ -67,7 +67,6 @@ def calc_corrs(season, position=None, pearson=True):
             if position is not None:
                 tmp_df = tmp_df[tmp_df["position"] == position]
 
-            print(tmp_df["position"])
 
             # check that the csv contains data
             if tmp_df.shape[0] > 0:
@@ -127,8 +126,9 @@ def make_corr_plots(position=None, pearson=True, scatter_scale=4, line_scale=3):
 
     # iterate the plotting process over seasons
     for s in SEASON_STRS:
-        df = calc_corrs(s, position, pearson=pearson)
+        print(f"Reading data from the {s} season")
 
+        df = calc_corrs(s, position, pearson=pearson)
         # convert columns to numpy arrays
         x = df["gw"].values.reshape(-1, 1)
         y = df["total_points"].values.reshape(-1, 1)
@@ -156,12 +156,12 @@ def make_corr_plots(position=None, pearson=True, scatter_scale=4, line_scale=3):
 
         # save the plot
         plt.savefig(f"{plot_dir}/fit_{s}_{pos_str.lower()}.png")
+        plt.close()
 
 
 for p in POSITION_LIST:
     make_corr_plots(p, True)
     make_corr_plots(p, False)
-
 
 
 
