@@ -164,7 +164,6 @@ for p in POSITION_LIST:
     make_corr_plots(p, False)
 
 
-
 # keep track of how long this takes to run
 EXECTIME = round(time.time() - STARTTIME, 2)
 print(f"{FILENAME} finished in {EXECTIME} seconds")
